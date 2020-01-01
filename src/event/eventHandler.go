@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	responseMapper "github.com/mohsentm/event-project-test/src/helper"
 	"io/ioutil"
 	"net/http"
-	responseMapper "restapi/src/helper"
 )
 
 type event struct {

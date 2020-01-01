@@ -2,9 +2,9 @@ package router
 
 import (
 	"github.com/gorilla/mux"
+	eventHandler "github.com/mohsentm/event-project-test/src/event"
+	"github.com/mohsentm/event-project-test/src/home"
 	"net/http"
-	eventHandler "restapi/src/event"
-	"restapi/src/home"
 )
 
 func Routes(router *mux.Router) *mux.Router {

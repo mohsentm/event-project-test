@@ -1,4 +1,4 @@
-module restapi
+module github.com/mohsentm/event-project-test
 
 go 1.13
 

@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/mohsentm/event-project-test/src/router"
 	"log"
 	"net/http"
-	"restapi/src/api/router"
 )
 
 func main() {
