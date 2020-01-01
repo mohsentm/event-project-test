@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gorilla/mux"
-	eventHandler "github.com/mohsentm/event-project-test/src/event"
-	"github.com/mohsentm/event-project-test/src/home"
+	eventHandler "github.com/mohsentm/event-project-test/internal/event"
+	"github.com/mohsentm/event-project-test/internal/home"
 	"net/http"
 )
 

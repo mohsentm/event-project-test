@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	responseMapper "github.com/mohsentm/event-project-test/src/helper"
+	responseMapper "github.com/mohsentm/event-project-test/internal/helper"
 	"io/ioutil"
 	"net/http"
 )

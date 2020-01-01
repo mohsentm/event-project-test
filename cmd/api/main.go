@@ -2,14 +2,23 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/mohsentm/event-project-test/src/router"
+	"github.com/mohsentm/event-project-test/internal/router"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
 	r := mux.NewRouter().StrictSlash(true)
 	subRouter := r.PathPrefix("/api").Subrouter()
 
-	log.Fatal(http.ListenAndServe(":8080", router.Routes(subRouter)))
+	srv := &http.Server{
+		Handler:      router.Routes(subRouter),
+		Addr:         ":80",
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	log.Fatal(srv.ListenAndServe())
+
 }
