@@ -15,5 +15,5 @@
 vendor/
 
 .idea
-bin/*
+bin
 .env
