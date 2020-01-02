@@ -21,7 +21,7 @@ func main() {
 
 	srv := &http.Server{
 		Handler:      router.Routes(subRouter),
-		Addr:         ":" + conf.Port,
+		Addr:         ":" + conf.ApiPort,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}

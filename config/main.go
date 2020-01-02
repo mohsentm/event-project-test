@@ -8,14 +8,6 @@ import (
 	"strings"
 )
 
-type Config struct {
-	Port string
-}
-
-var defaultConfig = Config{
-	Port: "80",
-}
-
 func Init() {
 	if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")
@@ -24,7 +16,17 @@ func Init() {
 
 func Get() *Config {
 	return &Config{
-		Port: getEnv("PORT", defaultConfig.Port),
+		ApiPort: getEnv("API_PORT", defaultConfig.ApiPort),
+		Database: Database{
+			DbConnection: getEnv("DB_CONNECTION", defaultConfig.Database.DbConnection),
+			Mysql:        Mysql{
+				Host: getEnv("MYSQL_HOST", defaultConfig.Database.Mysql.Host),
+				Database: getEnv("MYSQL_DATABASE", defaultConfig.Database.Mysql.Database),
+				User: getEnv("MYSQL_USER", defaultConfig.Database.Mysql.User),
+				Password: getEnv("MYSQL_PASSWORD", defaultConfig.Database.Mysql.Password),
+				Port: getEnv("MYSQL_PORT", defaultConfig.Database.Mysql.Port),
+			},
+		},
 	}
 }
 
