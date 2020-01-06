@@ -9,7 +9,6 @@ if [[ ! -f .env ]]; then
   cp .env.example .env
 fi
 
-
-go build -o ./bin/api ./cmd/api
+make
 
 ./bin/api
