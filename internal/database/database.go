@@ -31,5 +31,5 @@ func connection() (*gorm.DB) {
 }
 
 func mysqlConnection(mysql *config.Mysql) (db *gorm.DB, err error) {
-	return gorm.Open("mysql", mysql.User+":"+mysql.Password+"@("+mysql.Host+":"+mysql.Port+")/"+mysql.Database)
+	return gorm.Open("mysql", mysql.User+":"+mysql.Password+"@("+mysql.Host+":"+mysql.Port+")/"+mysql.Database+"?parseTime=true")
 }

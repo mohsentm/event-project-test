@@ -5,37 +5,14 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	responseMapper "github.com/mohsentm/event-project-test/internal/helper"
-	"github.com/mohsentm/event-project-test/internal/database"
-	"github.com/mohsentm/event-project-test/internal/event/model"
+	"github.com/mohsentm/event-project-test/internal/helper/exception"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
-type event struct {
-	ID          string `json:"ID"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-}
-
-type AllEvents []event
-
-var events = AllEvents{
-	{
-		ID:          "1",
-		Title:       "test title",
-		Description: "test description for this",
-	},
-}
-
 func GetAllEvent(w http.ResponseWriter, r *http.Request) {
-	db := database.Open()
-	defer database.Close()
-
-	var result model.Event
-	db.Find(&result)
-
-	responseMapper.ResponseHandler(w, result)
-	// responseMapper.ResponseHandler(w, events)
+	responseMapper.Success(w, getEvents())
 }
 
 func CreateEvent(w http.ResponseWriter, r *http.Request) {
@@ -48,17 +25,23 @@ func CreateEvent(w http.ResponseWriter, r *http.Request) {
 	_ = json.Unmarshal(reqBody, &newEvent)
 	events = append(events, newEvent)
 	w.WriteHeader(http.StatusCreated)
-	responseMapper.ResponseHandler(w, newEvent)
+	responseMapper.Success(w, newEvent)
 }
 
 func GetOneEvent(w http.ResponseWriter, r *http.Request) {
-	eventID := mux.Vars(r)["id"]
-
-	for _, singleEvent := range events {
-		if singleEvent.ID == eventID {
-			responseMapper.ResponseHandler(w, singleEvent)
-		}
+	eventID, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		responseMapper.Exception(w, exception.BadRequest)
+		return
 	}
+
+	event, err := findEvent(eventID)
+	if err != nil {
+		responseMapper.Exception(w, exception.NotFound)
+		return
+	}
+
+	responseMapper.Success(w, event)
 }
 
 func UpdateEvent(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +60,7 @@ func UpdateEvent(w http.ResponseWriter, r *http.Request) {
 			singleEvent.Title = updateEvent.Title
 			singleEvent.Description = updateEvent.Description
 			events = append(events[:i], singleEvent)
-			responseMapper.ResponseHandler(w, singleEvent)
+			responseMapper.Success(w, singleEvent)
 		}
 	}
 }
