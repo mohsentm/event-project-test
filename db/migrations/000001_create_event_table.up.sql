@@ -1,5 +1,5 @@
 CREATE TABLE `events` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT , PRIMARY KEY (`id`),
   `title` varchar(100) DEFAULT NULL,
   `description` text,
   `created_at` timestamp NULL DEFAULT NULL,

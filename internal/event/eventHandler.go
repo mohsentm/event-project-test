@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	responseMapper "github.com/mohsentm/event-project-test/internal/helper"
+	"github.com/mohsentm/event-project-test/internal/database"
+	"github.com/mohsentm/event-project-test/internal/event/model"
 	"io/ioutil"
 	"net/http"
 )
@@ -23,6 +25,17 @@ var events = AllEvents{
 		Title:       "test title",
 		Description: "test description for this",
 	},
+}
+
+func GetAllEvent(w http.ResponseWriter, r *http.Request) {
+	db := database.Open()
+	defer database.Close()
+
+	var result model.Event
+	db.Find(&result)
+
+	responseMapper.ResponseHandler(w, result)
+	// responseMapper.ResponseHandler(w, events)
 }
 
 func CreateEvent(w http.ResponseWriter, r *http.Request) {
@@ -46,10 +59,6 @@ func GetOneEvent(w http.ResponseWriter, r *http.Request) {
 			responseMapper.ResponseHandler(w, singleEvent)
 		}
 	}
-}
-
-func GetAllEvent(w http.ResponseWriter, r *http.Request) {
-	responseMapper.ResponseHandler(w, events)
 }
 
 func UpdateEvent(w http.ResponseWriter, r *http.Request) {
