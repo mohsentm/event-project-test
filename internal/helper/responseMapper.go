@@ -10,6 +10,17 @@ func Success(w http.ResponseWriter, responseData interface{}) {
 	Json(w, responseData, http.StatusOK)
 }
 
+func Created(w http.ResponseWriter, responseData interface{})  {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(responseData)
+}
+
+func Deleted(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusAccepted)
+}
+
 func Exception(w http.ResponseWriter, exception exception.Exception) {
 	Json(w, exception, exception.StatusCode)
 }

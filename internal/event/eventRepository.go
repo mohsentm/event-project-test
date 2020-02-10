@@ -14,6 +14,11 @@ type event struct {
 	Description string `json:"description"`
 }
 
+type newEvent struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
 type AllEvents []event
 
 var events = AllEvents{
@@ -27,6 +32,7 @@ var events = AllEvents{
 type NotFoundExeption struct {
 	Message string `json:"message"`
 }
+
 type listEvent []model.Event
 
 func getEvents() listEvent {
@@ -51,4 +57,45 @@ func findEvent(id int) (model.Event, error) {
 	}
 
 	return event, nil
+}
+
+func createEvent(NewEvent *newEvent) (model.Event, error) {
+	db := database.Open()
+	defer database.Close()
+
+	event := model.Event{
+		Title:       NewEvent.Title,
+		Description: NewEvent.Description,
+	}
+
+	if db.Create(&event).RecordNotFound() {
+		fmt.Println(db.Error)
+		err := errors.New("database error")
+		return model.Event{}, err
+	}
+	return event, nil
+}
+
+func updateEvent(id int, UpdateEvent *newEvent) (model.Event, error) {
+	db := database.Open()
+	defer database.Close()
+
+	var event = model.Event{}
+	if db.Where(&model.Event{ID: id}).First(&event).RecordNotFound() {
+		err := errors.New("event not found")
+		return model.Event{}, err
+	}
+
+	event.Title = UpdateEvent.Title
+	event.Description = UpdateEvent.Description
+	db.Save(&event)
+
+	return event, nil
+}
+
+func deleteEvent(id int)  {
+	db := database.Open()
+	defer database.Close()
+	
+	db.Where(&model.Event{ID: id}).Delete(&model.Event{})
 }
